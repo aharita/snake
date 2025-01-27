@@ -1,3 +1,7 @@
+html, body {
+  touch-action: manipulation;
+}
+
 body {
   background-color: #333;
   margin: 0;
