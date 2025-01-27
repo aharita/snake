@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Canvas Example</title>
+    <title>Snake Game</title>
     <style>
       body {
         background-color: #333;
@@ -12,17 +12,71 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
+        flex-direction: column;
       }
       canvas {
         background-color: #000;
       }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        background-color: #555;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .button-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .direction-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+        margin-left: -190px;
+      }
+      .direction-buttons button {
+        width: 50px;
+        height: 50px;
+        font-size: 14px;
+      }
+      .direction-buttons .up {
+        grid-column: 2;
+        grid-row: 1;
+      }
+      .direction-buttons .left {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .direction-buttons .down {
+        grid-column: 2;
+        grid-row: 3;
+      }
+      .direction-buttons .right {
+        grid-column: 3;
+        grid-row: 2;
+      }
     </style>
   </head>
   <body>
-    <canvas id="canvas" width="240" height="240"></canvas>
-    <script src="game.js"></script>
-    <script src="snake.js"></script>
+    <canvas id="canvas" width="380" height="400"></canvas>
+    <div class="direction-buttons">
+      <button id="upButton" class="up">↑</button>
+      <button id="leftButton" class="left">←</button>
+      <button id="downButton" class="down">↓</button>
+      <button id="rightButton" class="right">→</button>
+    </div>
+    <div class="button-container">
+      <button id="pauseResumeButton">Start</button>
+      <button id="restartButton">Restart</button>
+    </div>
     <script src="food.js"></script>
+    <script src="snake.js"></script>
+    <script src="game.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

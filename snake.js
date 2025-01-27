@@ -4,12 +4,8 @@ class Snake {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.food = food;
-    this.segments = [
-      {
-        x: this.getRandomPosition(canvasWidth),
-        y: this.getRandomPosition(canvasHeight),
-      },
-    ];
+    this.segments = [{ x: gridSize * 5, y: gridSize * 5 }];
+    this.direction = "right";
   }
 
   getRandomPosition(max) {
@@ -23,10 +19,10 @@ class Snake {
     });
   }
 
-  update(direction) {
+  update() {
     const head = { ...this.segments[0] };
 
-    switch (direction) {
+    switch (this.direction) {
       case "up":
         head.y -= this.gridSize;
         if (head.y < 0) head.y = this.canvasHeight - this.gridSize;
@@ -45,6 +41,12 @@ class Snake {
         break;
     }
 
+    for (let i = 1; i < this.segments.length; i++) {
+      if (head.x === this.segments[i].x && head.y === this.segments[i].y) {
+        return true;
+      }
+    }
+
     this.segments.unshift(head);
 
     if (head.x === this.food.x && head.y === this.food.y) {
@@ -52,6 +54,8 @@ class Snake {
     } else {
       this.segments.pop();
     }
+
+    return false;
   }
 
   checkCollision() {

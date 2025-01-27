@@ -14,9 +14,11 @@ class Game {
     );
     this.direction = "right";
     this.lastUpdateTime = 0;
-    this.snakeSpeed = 100;
+    this.snakeSpeed = 150;
     this.directionChanged = false;
-    this.gameOver = false; // Flag to track game over state
+    this.gameOver = false;
+    this.animationFrameId = null;
+    this.isPaused = false;
   }
 
   start() {
@@ -24,8 +26,29 @@ class Game {
     this.snake.draw(this.context);
     this.food.draw(this.context);
 
-    window.addEventListener("keydown", (event) => this.changeDirection(event));
-    requestAnimationFrame((currentTime) => this.updateGame(currentTime));
+    window.addEventListener("keydown", this.changeDirection.bind(this));
+    this.isPaused = false;
+    this.animationFrameId = requestAnimationFrame(this.updateGame.bind(this));
+  }
+
+  stop() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+    window.removeEventListener("keydown", this.changeDirection.bind(this));
+  }
+
+  pause() {
+    this.isPaused = true;
+  }
+
+  resume() {
+    if (this.isPaused) {
+      this.isPaused = false;
+      this.lastUpdateTime = performance.now();
+      this.animationFrameId = requestAnimationFrame(this.updateGame.bind(this));
+    }
   }
 
   drawGrid() {
@@ -45,42 +68,54 @@ class Game {
     if (!this.directionChanged) {
       switch (event.key) {
         case "ArrowUp":
-          if (this.direction !== "down") this.direction = "up";
+          if (this.direction !== "down") {
+            this.direction = "up";
+          }
           break;
         case "ArrowDown":
-          if (this.direction !== "up") this.direction = "down";
+          if (this.direction !== "up") {
+            this.direction = "down";
+          }
           break;
         case "ArrowLeft":
-          if (this.direction !== "right") this.direction = "left";
+          if (this.direction !== "right") {
+            this.direction = "left";
+          }
           break;
         case "ArrowRight":
-          if (this.direction !== "left") this.direction = "right";
+          if (this.direction !== "left") {
+            this.direction = "right";
+          }
           break;
       }
       this.directionChanged = true;
     }
   }
 
-  updateGame(currentTime) {
-    if (this.gameOver) {
-      this.displayGameOver();
+  updateGame(timestamp) {
+    if (this.isPaused) {
       return;
     }
 
-    if (currentTime - this.lastUpdateTime > this.snakeSpeed) {
+    const deltaTime = timestamp - this.lastUpdateTime;
+    if (deltaTime > this.snakeSpeed) {
+      this.lastUpdateTime = timestamp;
       this.clearCanvas();
       this.drawGrid();
-      this.snake.update(this.direction, this.canvasWidth, this.canvasHeight);
+      this.snake.direction = this.direction;
+      if (this.snake.update()) {
+        this.gameOver = true;
+        this.displayGameOver();
+        return;
+      }
       this.snake.draw(this.context);
       this.food.draw(this.context);
-      this.lastUpdateTime = currentTime;
       this.directionChanged = false;
-
-      if (this.snake.checkCollision()) {
-        this.gameOver = true;
-      }
     }
-    requestAnimationFrame((currentTime) => this.updateGame(currentTime));
+
+    if (!this.gameOver) {
+      this.animationFrameId = requestAnimationFrame(this.updateGame.bind(this));
+    }
   }
 
   displayGameOver() {
