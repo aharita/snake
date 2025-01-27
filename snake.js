@@ -1,9 +1,10 @@
 class Snake {
-  constructor(gridSize, canvasWidth, canvasHeight, food) {
+  constructor(gridSize, canvasWidth, canvasHeight, food, game) {
     this.gridSize = gridSize;
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
     this.food = food;
+    this.game = game;
     this.segments = [{ x: gridSize * 5, y: gridSize * 5 }];
     this.direction = "right";
   }
@@ -51,6 +52,7 @@ class Snake {
 
     if (head.x === this.food.x && head.y === this.food.y) {
       this.food.generateNewPosition(this.canvasWidth, this.canvasHeight);
+      this.game.score++;
     } else {
       this.segments.pop();
     }

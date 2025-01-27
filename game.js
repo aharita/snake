@@ -10,7 +10,8 @@ class Game {
       this.gridSize,
       this.canvasWidth,
       this.canvasHeight,
-      this.food
+      this.food,
+      this
     );
     this.direction = "right";
     this.lastUpdateTime = 0;
@@ -19,12 +20,15 @@ class Game {
     this.gameOver = false;
     this.animationFrameId = null;
     this.isPaused = false;
+    this.score = 0;
+    this.scoreElement = document.getElementById("score");
   }
 
   start() {
     this.drawGrid();
     this.snake.draw(this.context);
     this.food.draw(this.context);
+    this.updateScore();
 
     window.addEventListener("keydown", this.changeDirection.bind(this));
     this.isPaused = false;
@@ -62,6 +66,10 @@ class Game {
 
   clearCanvas() {
     this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+  }
+
+  updateScore() {
+    this.scoreElement.textContent = `Score: ${this.score}`;
   }
 
   changeDirection(event) {
@@ -111,6 +119,7 @@ class Game {
       this.snake.draw(this.context);
       this.food.draw(this.context);
       this.directionChanged = false;
+      this.updateScore();
     }
 
     if (!this.gameOver) {
@@ -127,5 +136,7 @@ class Game {
       this.canvasWidth / 2,
       this.canvasHeight / 2
     );
+    this.score = 0;
+    this.updateScore();
   }
 }

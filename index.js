@@ -13,8 +13,7 @@ window.onload = function () {
       game.clearCanvas();
       game = new Game(canvas, context);
       game.start();
-      game.pause();
-      document.getElementById("pauseResumeButton").textContent = "Start"; // Change text to "Start"
+      document.getElementById("pauseResumeButton").textContent = "Pause";
     });
 
   document
