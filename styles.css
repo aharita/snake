@@ -1,0 +1,71 @@
+body {
+  background-color: #333;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+canvas {
+  background-color: #000;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  background-color: #555;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.controls-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 380px;
+  margin-top: 20px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.direction-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.direction-buttons button {
+  width: 50px;
+  height: 50px;
+  font-size: 14px;
+}
+
+.direction-buttons .up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.direction-buttons .left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.direction-buttons .down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.direction-buttons .right {
+  grid-column: 3;
+  grid-row: 2;
+}
